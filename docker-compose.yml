@@ -1,0 +1,26 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  # サービス名は'app'とします
+  app:
+    # Dockerfileを使ってカスタムイメージをビルドします
+    build: .
+    # コンテナが停止したら自動で再起動します
+    restart: unless-stopped
+    # プロジェクトのコードをコンテナ内に同期させます
+    volumes:
+      - .:/var/www/html
+    # .envファイルから環境変数（パスワードなど）を読み込みます
+    env_file:
+      - .env
+    # Nginx Proxy Managerと同じネットワークに接続します
+    networks:
+      - npm_default
+
+networks:
+  # 外部にすでにあるネットワークを指定します
+  npm_default:
+    external:
+      name: nginx-proxy-manager_default
