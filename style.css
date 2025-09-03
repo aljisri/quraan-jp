@@ -1,0 +1,60 @@
+/* style.css */
+
+/* フォントの読み込み（仮のURLです。実際のフォントに合わせてください） */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+/* @import url('KING_FAHD_COMPLEX_FONT_URL'); */
+/* @import url('YU_KYOKASHOTAI_FONT_URL'); */
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.8;
+    margin: 0;
+    background-color: #fdfdfd;
+}
+
+.container {
+    display: flex;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+aside {
+    width: 350px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-left: 1px solid #ddd;
+    min-height: 100vh;
+}
+
+.ayah-box {
+    border-bottom: 1px solid #eee;
+    padding: 1.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.ayah-box:hover {
+    background-color: #f9f9f9;
+}
+
+.ayah-number {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.arabic-text {
+    font-family: 'King Fahd Complex', 'Amiri', serif; /* King Fahd ComplexがなければAmiriなど */
+    font-size: 2em;
+    direction: rtl; /* アラビア語は右から左へ */
+    text-align: right;
+    color: #333;
+}
+
+.japanese-text {
+    font-family: 'Yu Kyokashotai', '游教科書体', serif;
+    font-size: 1.1em;
+    color: #555;
+}
