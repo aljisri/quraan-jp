@@ -21,13 +21,59 @@ body {
     overflow-x: hidden;
 }
 
-/* --- 共通のヘッダーとコンテンツコンテナ --- */
-.site-header { padding: 10px 20px; border-bottom: 1px solid var(--border-color); height: var(--header-height); box-sizing: border-box; }
+/* --- ページ全体のラッパー --- */
+#page-wrapper {
+    transition: transform 0.3s ease-in-out;
+}
+/* サイドバーが開いた時にページ全体を左に押しやる */
+#page-wrapper.sidebar-open {
+    transform: translateX(calc(var(--sidebar-width) * -1));
+}
+
+
+/* --- ヘッダー --- */
+.site-header {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    height: var(--header-height);
+    box-sizing: border-box;
+    background-color: #fff; /* 背景色を指定 */
+}
 .site-header h1 { margin: 0; font-size: 1.5em; }
 .site-header a { text-decoration: none; color: inherit; }
-.view-container { max-width: var(--content-max-width); margin: 0 auto; padding: 20px; }
 
-/* --- index.html (スーラ選択ページ) のスタイル --- */
+.content-header {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--content-header-height);
+    border-top: 4px solid #4C82A7;
+    box-sizing: border-box;
+}
+.content-header h2 { margin: 0 auto; font-size: 1.2em; font-family: 'Noto Serif JP', serif; font-weight: 700; }
+.close-button {
+    text-decoration: none;
+    color: #888;
+    font-size: 1.8em;
+    line-height: 1;
+    position: absolute;
+    left: calc((100vw - var(--content-max-width)) / 2);
+}
+
+
+/* --- メインコンテンツ --- */
+.view-container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* index.htmlのカードスタイル */
 .list-title { font-size: 2em; font-weight: bold; margin-bottom: 1.5rem; font-family: 'Noto Serif JP', serif; }
 #surah-list-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
 .surah-link { display: block; padding: 1rem; border: 1px solid var(--border-color); border-radius: 5px; text-decoration: none; color: inherit; transition: background-color 0.2s, border-color 0.2s; }
@@ -35,24 +81,8 @@ body {
 .surah-link h3 { margin: 0 0 5px 0; font-family: 'Noto Serif JP', serif; }
 .surah-info { font-size: 0.9em; color: #777; }
 
-/* --- surah.php (アーヤ表示ページ) のレイアウト --- */
-#page-container.sidebar-open { overflow: hidden; }
-.main-container { display: flex; }
-.content-wrapper { width: 100%; transition: margin-right 0.3s ease-in-out; }
-.page-container.sidebar-open .content-wrapper { margin-right: var(--sidebar-width); }
-
-.content-header { display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); background-color: #fff; position: sticky; top: 0; z-index: 100; height: var(--content-header-height); border-top: 4px solid #4C82A7; box-sizing: border-box; }
-.content-header h2 { margin: 0 auto; font-size: 1.2em; font-family: 'Noto Serif JP', serif; font-weight: 700; }
-.close-button { text-decoration: none; color: #888; font-size: 1.8em; line-height: 1; position: absolute; left: calc((100% - var(--content-max-width)) / 2); }
-
-/* --- アーヤ表示スタイル --- */
+/* アーヤ表示スタイル */
+#ayah-view { padding-top: 15px; }
 .ayah-box { padding: 0.75rem 0; cursor: pointer; border-radius: 5px; }
 .ayah-box.selected { background-color: var(--highlight-color); }
-.arabic-text { font-family: 'Scheherazade New', serif; font-size: 2em; line-height: 1.8; direction: rtl; text-align: right; }
-.japanese-text { font-family: 'Noto Serif JP', serif; font-size: 1.0em; color: #555; margin-top: 10px; }
-.ayah-number { font-size: 0.9em; color: #888; }
-
-/* --- サイドバー --- */
-aside { width: var(--sidebar-width); min-width: 300px; background-color: #fff; border-left: 1px solid var(--border-color); position: fixed; right: 0; top: var(--header-height); bottom: 0; transform: translateX(100%); transition: transform 0.3s ease-in-out; box-sizing: border-box; z-index: 50; display: flex; flex-direction: column; }
-aside.visible { transform: translateX(0); }
-.sidebar-header { padding: 10px 20px; background-color: #e9ecef; border-bottom: 1px solid var(--border-color); flex-shrink: 0; height: var(--
+.arabic-text { font-family: 'Scheherazade New', serif; font-size: 2em; line-height: 1.8;
