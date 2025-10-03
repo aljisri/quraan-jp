@@ -1,6 +1,6 @@
 /* style.css */
 
-/* --- フォント --- */
+/* --- Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap');
@@ -18,43 +18,119 @@ body {
     font-family: 'Noto Sans JP', sans-serif;
     margin: 0;
     background-color: #fff;
+    overflow-x: hidden;
 }
 
-/* --- 共通ヘッダー --- */
-.site-header { padding: 10px 20px; border-bottom: 1px solid var(--border-color); height: var(--header-height); box-sizing: border-box; }
+/* --- Main Header --- */
+.site-header {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    height: var(--header-height);
+    box-sizing: border-box;
+}
 .site-header h1 { margin: 0; font-size: 1.5em; }
 .site-header a { text-decoration: none; color: inherit; }
 
-/* --- 共通コンテンツコンテナ --- */
-.view-container { max-width: var(--content-max-width); margin: 0 auto; padding: 20px; }
+/* --- Main Layout Container --- */
+.page-container {
+    display: flex;
+}
+.main-content-wrapper {
+    width: 100%;
+    flex-grow: 1;
+    transition: width 0.3s ease-in-out;
+}
+body.sidebar-open .main-content-wrapper {
+    width: calc(100% - var(--sidebar-width));
+}
 
-/* --- index.html (スーラ選択ページ) 専用スタイル --- */
-.index-page .list-title { font-size: 2em; font-weight: bold; margin-bottom: 1.5rem; font-family: 'Noto Serif JP', serif; }
-.index-page #surah-list-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
-.index-page .surah-link { display: block; padding: 1rem; border: 1px solid var(--border-color); border-radius: 5px; text-decoration: none; color: inherit; transition: background-color 0.2s, border-color 0.2s; }
-.index-page .surah-link:hover { background-color: #f9f9f9; border-color: #ccc; }
-.index-page .surah-link h3 { margin: 0 0 5px 0; font-family: 'Noto Serif JP', serif; }
-.index-page .surah-info { font-size: 0.9em; color: #777; }
+/* --- Content Header (Surah Name Bar) --- */
+.content-header {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the title */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--content-header-height);
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+    border-top: 4px solid #4C82A7;
+    box-sizing: border-box;
+    padding: 0 20px;
+}
+.content-header h2 {
+    margin: 0;
+    font-size: 1.2em;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+}
+.close-button {
+    text-decoration: none;
+    color: #888;
+    font-size: 1.8em;
+    line-height: 1;
+    position: absolute;
+    /* Adjust position based on the centered content */
+    left: calc((100% - var(--content-max-width)) / 2);
+}
 
-/* --- surah.php (アーヤ表示ページ) レイアウト --- */
-.surah-page .page-container { display: flex; }
-.surah-page .main-content-wrapper { flex-grow: 1; transition: width 0.3s ease-in-out; }
-.surah-page .content-header { display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid var(--border-color); background-color: #fff; position: sticky; top: 0; z-index: 100; height: var(--content-header-height); border-top: 4px solid #4C82A7; box-sizing: border-box; }
-.surah-page .content-header h2 { margin: 0 auto; font-size: 1.2em; font-family: 'Noto Serif JP', serif; font-weight: 700; }
-.surah-page .close-button { text-decoration: none; color: #888; font-size: 1.8em; line-height: 1; position: absolute; left: calc((100% - var(--content-max-width)) / 2 - 20px); }
-.surah-page.sidebar-open .close-button { left: calc(((100% - var(--sidebar-width)) - var(--content-max-width)) / 2 - 20px); }
-.surah-page.sidebar-open .main-content-wrapper { width: calc(100% - var(--sidebar-width)); }
+/* --- Main Content Area --- */
+.view-container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 20px;
+}
 
-/* --- アーヤ表示スタイル --- */
-.surah-page .ayah-box { padding: 0.75rem 0; cursor: pointer; border-radius: 5px; }
-.surah-page .ayah-box.selected { background-color: var(--highlight-color); }
-.surah-page .ayah-number { font-size: 0.9em; color: #888; }
-.surah-page .arabic-text { font-family: 'Scheherazade New', serif; font-size: 2em; line-height: 1.8; direction: rtl; text-align: right; }
-.surah-page .japanese-text { font-family: 'Noto Serif JP', serif; font-size: 1.0em; color: #555; margin-top: 10px; }
+/* --- index.html (Card Layout) --- */
+.list-title { font-size: 2em; font-weight: bold; margin-bottom: 1.5rem; font-family: 'Noto Serif JP', serif; }
+#surah-list-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+.surah-link { display: block; padding: 1rem; border: 1px solid var(--border-color); border-radius: 5px; text-decoration: none; color: inherit; transition: background-color 0.2s, border-color 0.2s; }
+.surah-link:hover { background-color: #f9f9f9; border-color: #ccc; }
+.surah-link h3 { margin: 0 0 5px 0; font-family: 'Noto Serif JP', serif; }
+.surah-info { font-size: 0.9em; color: #777; }
 
-/* --- サイドバー --- */
-.surah-page aside { width: var(--sidebar-width); min-width: 300px; background-color: #fff; border-left: 1px solid var(--border-color); position: fixed; right: -100%; transition: right 0.3s ease-in-out; top: var(--header-height); bottom: 0; box-sizing: border-box; z-index: 50; display: flex; flex-direction: column; }
-.surah-page.sidebar-open aside { right: 0; }
-.surah-page .sidebar-header { padding: 10px 20px; background-color: #e9ecef; border-bottom: 1px solid var(--border-color); flex-shrink: 0; height: var(--content-header-height); box-sizing: border-box; display: flex; align-items: center; }
-.surah-page .sidebar-header h3 { margin: 0; font-size: 1.2em; }
-.surah-page #sidebar-content { padding: 20px; overflow-y: auto; flex-grow: 1; background-color: #f8f9fa; }
+/* --- surah.php (Ayah View) --- */
+.ayah-box { padding: 0.75rem 1rem; cursor: pointer; border-radius: 5px; }
+.ayah-box.selected { background-color: var(--highlight-color); }
+.ayah-number { font-size: 0.9em; color: #888; }
+.arabic-text { font-family: 'Scheherazade New', serif; font-size: 2em; line-height: 1.8; direction: rtl; text-align: right; }
+.japanese-text { font-family: 'Noto Serif JP', serif; font-size: 1.0em; color: #555; margin-top: 10px; }
+
+/* --- Sidebar --- */
+aside {
+    width: var(--sidebar-width);
+    min-width: 300px;
+    background-color: #fff;
+    border-left: 1px solid var(--border-color);
+    position: fixed;
+    right: -100%; /* Initially hidden */
+    top: var(--header-height);
+    bottom: 0;
+    transition: right 0.3s ease-in-out;
+    box-sizing: border-box;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+body.sidebar-open aside {
+    right: 0; /* Slide in */
+}
+.sidebar-header {
+    padding: 10px 20px;
+    background-color: #e9ecef; /* Gray bar */
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    height: var(--content-header-height);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+.sidebar-header h3 { margin: 0; font-size: 1.2em; }
+#sidebar-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+    background-color: #f8f9fa; /* Lighter gray */
+}
