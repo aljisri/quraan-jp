@@ -11,11 +11,12 @@
     </header>
 
     <div class="page-container">
-        <div class="content-wrapper">
+        <div class="main-content-wrapper">
             <header class="content-header">
                 <a href="/" class="close-button">×</a>
                 <h2 id="view-title">読み込み中...</h2>
             </header>
+
             <main>
                 <div id="ayah-view" class="view-container">
                     </div>
