@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function displaySurahList() {
         try {
-            const response = await fetch('api_surahs.php');
+            const response = await fetch('api-surahs.php');
             const surahs = await response.json();
 
             surahListView.innerHTML = '';
