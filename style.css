@@ -1,60 +1,148 @@
 /* style.css */
 
-/* フォントの読み込み（仮のURLです。実際のフォントに合わせてください） */
+/* --- フォントの読み込み --- */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
-/* @import url('KING_FAHD_COMPLEX_FONT_URL'); */
-/* @import url('YU_KYOKASHOTAI_FONT_URL'); */
+/* Scheherazade New をGoogle Fontsから読み込みます */
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
+
+
+:root {
+    --border-color: #eee;
+    --highlight-color: #F1F7FF; /* ハイライト色の指定 */
+}
 
 body {
     font-family: 'Noto Sans JP', sans-serif;
-    line-height: 1.8;
+    line-height: 1.6;
     margin: 0;
-    background-color: #fdfdfd;
+    background-color: #fff;
+    color: #333;
 }
 
 .container {
     display: flex;
+    position: relative; /* サイドバーの位置決めの基準 */
+}
+
+header {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #fafafa;
+}
+.navigation {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+header h1 {
+    margin: 0;
+    font-size: 1.5em;
 }
 
 main {
-    flex-grow: 1;
-    padding: 20px;
+    width: 100%;
+    padding: 15px;
+    transition: width 0.3s ease-in-out;
+}
+main.sidebar-open {
+    width: 70%; /* サイドバーが開いたらメインエリアを狭くする */
 }
 
-aside {
-    width: 350px;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-left: 1px solid #ddd;
-    min-height: 100vh;
-}
 
-.ayah-box {
-    border-bottom: 1px solid #eee;
-    padding: 1.5rem 1rem;
+/* --- スーラ選択画面のスタイル --- */
+#surah-list-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+.surah-link {
+    display: block;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+}
+.surah-link:hover {
+    background-color: #f9f9f9;
+    border-color: #ccc;
+}
+.surah-link h3 {
+    margin: 0 0 5px 0;
+}
+.surah-info {
+    font-size: 0.9em;
+    color: #777;
 }
 
+
+/* --- アーヤ表示のスタイル --- */
+.ayah-box {
+    /* border-bottom は削除 */
+    padding: 0.75rem 1rem; /* 余白を狭くする */
+    cursor: pointer;
+    border-radius: 5px;
+}
 .ayah-box:hover {
     background-color: #f9f9f9;
 }
+/* クリックされたアーヤに適用するハイライトスタイル */
+.ayah-box.selected {
+    background-color: var(--highlight-color);
+}
+
 
 .ayah-number {
     font-size: 0.9em;
     color: #888;
 }
-
 .arabic-text {
-    font-family: 'King Fahd Complex', 'Amiri', serif; /* King Fahd ComplexがなければAmiriなど */
-    font-size: 2em;
-    direction: rtl; /* アラビア語は右から左へ */
+    /* フォントをScheherazade Newに変更 */
+    font-family: 'Scheherazade New', serif;
+    font-size: 1.8em;
+    direction: rtl;
     text-align: right;
-    color: #333;
+}
+.japanese-text {
+    font-family: 'Yu Mincho', '游明朝', serif; /* 游教科書体の代替 */
+    font-size: 1.0em;
+    color: #555;
+    margin-top: 10px;
 }
 
-.japanese-text {
-    font-family: 'Yu Kyokashotai', '游教科書体', serif;
-    font-size: 1.1em;
-    color: #555;
+
+/* --- サイドバーのスタイル --- */
+aside {
+    width: 30%;
+    min-width: 300px;
+    max-width: 450px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-left: 1px solid var(--border-color);
+    
+    /* 普段は画面の外に隠す */
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    box-sizing: border-box;
+    z-index: 100;
+}
+/* 表示する時に画面内にスライドイン */
+aside.visible {
+    transform: translateX(0);
+}
+#close-sidebar {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
 }
