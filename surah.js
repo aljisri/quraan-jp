@@ -22,11 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (ayahs.length > 0) {
                 const surahName = ayahs[0].surah_name_japanese;
-                if(surahName) {
+                if(surahName) { 
                     viewTitle.textContent = `${surahId}. ${surahName}`;
                     document.title = `Quraan.jp - ${surahName}`;
                 } else {
-                    viewTitle.textContent = `第${surahId}章`; // Fallback in case of an issue
+                    viewTitle.textContent = `第${surahId}章`;
                 }
             }
 
