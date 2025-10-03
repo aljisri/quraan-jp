@@ -3,12 +3,11 @@
 /* --- フォントの読み込み --- */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
-/* 日本語用にNoto Serif JP（明朝体）を読み込み */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap'); /* 明朝体 */
 
 :root {
     --border-color: #e0e0e0;
-    --highlight-color: #F1F7FF;
+    --highlight-color: #F1F7FF; /* ご指定のハイライト色 */
 }
 
 body {
@@ -41,7 +40,7 @@ header {
 .content-header {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
     padding: 10px 20px;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
@@ -51,6 +50,8 @@ header {
     margin: 0;
     font-size: 1.2em;
     font-weight: normal;
+    flex-grow: 1; /* タイトルが中央に来るように */
+    text-align: center;
 }
 .close-button {
     text-decoration: none;
@@ -98,7 +99,6 @@ main.sidebar-open {
 }
 .surah-link h3 {
     margin: 0 0 5px 0;
-    /* 日本語フォントを明朝体（Noto Serif JP）に設定 */
     font-family: 'Noto Serif JP', serif;
 }
 .surah-info {
@@ -114,11 +114,10 @@ main.sidebar-open {
     padding: 0.75rem 1rem;
     cursor: pointer;
     border-radius: 5px;
-    border: 2px solid transparent;
 }
+/* ★ 修正点：クリックされたアーヤに適用するハイライトスタイル */
 .ayah-box.selected {
     background-color: var(--highlight-color);
-    border-color: #aaccff;
 }
 
 .ayah-number {
@@ -133,7 +132,6 @@ main.sidebar-open {
     line-height: 1.8;
 }
 .japanese-text {
-    /* 日本語フォントを明朝体（Noto Serif JP）に設定 */
     font-family: 'Noto Serif JP', serif;
     font-size: 1.0em;
     color: #555;
@@ -152,14 +150,15 @@ aside {
     right: 0;
     top: 0;
     height: 100%;
-    transform: translateX(100%); /* 普段は画面の外 */
+    transform: translateX(100%); /* ★ 修正点：普段は画面の外 */
     transition: transform 0.3s ease-in-out;
     box-sizing: border-box;
-    z-index: 100;
+    z-index: 300;
     overflow-y: auto;
 }
+/* ★ 修正点：表示する時にスライドイン */
 aside.visible {
-    transform: translateX(0); /* 表示する時にスライドイン */
+    transform: translateX(0);
 }
 #close-sidebar {
     position: absolute;
