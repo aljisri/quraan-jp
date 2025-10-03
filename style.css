@@ -1,6 +1,6 @@
 /* style.css */
 
-/* --- Fonts --- */
+/* --- フォント --- */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap');
@@ -20,7 +20,7 @@ body {
     background-color: #fff;
 }
 
-/* --- Common Header --- */
+/* --- 共通ヘッダー --- */
 .site-header {
     padding: 10px 20px;
     border-bottom: 1px solid var(--border-color);
@@ -34,7 +34,7 @@ body {
 .site-header h1 { margin: 0; font-size: 1.5em; }
 .site-header a { text-decoration: none; color: inherit; }
 
-/* --- index.html Styles --- */
+/* --- index.html スタイル --- */
 .index-page .view-container { max-width: var(--content-max-width); margin: 0 auto; padding: 20px; }
 .index-page .list-title { font-size: 2em; font-weight: bold; margin-bottom: 1.5rem; font-family: 'Noto Serif JP', serif; }
 .index-page #surah-list-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
@@ -43,15 +43,9 @@ body {
 .index-page .surah-link h3 { margin: 0 0 5px 0; font-family: 'Noto Serif JP', serif; }
 .index-page .surah-info { font-size: 0.9em; color: #777; }
 
-
-/* --- surah.php Layout --- */
-.surah-page .page-container {
-    display: flex;
-}
-.surah-page .main-content-wrapper {
-    flex-grow: 1;
-    min-width: 0;
-}
+/* --- surah.php レイアウト --- */
+.surah-page .page-container { display: flex; }
+.surah-page .main-content-wrapper { flex-grow: 1; min-width: 0; }
 .surah-page .content-header {
     display: flex;
     justify-content: center;
@@ -75,7 +69,7 @@ body {
     box-sizing: border-box;
 }
 .surah-page .content-header h2 {
-    margin: 0 auto;
+    margin: 0;
     font-size: 1.2em;
     font-family: 'Noto Serif JP', serif;
     font-weight: 700;
@@ -85,25 +79,27 @@ body {
     color: #888;
     font-size: 1.8em;
     line-height: 1;
+    /* ★ 修正点: 位置を調整 */
     position: absolute;
     left: 0;
 }
 
-/* Ayah View Styles */
 .surah-page .view-container { max-width: var(--content-max-width); margin: 0 auto; padding: 20px; }
+
+/* アーヤ表示スタイル */
 .surah-page .ayah-box { padding: 0.75rem 1rem; cursor: pointer; border-radius: 5px; }
 .surah-page .ayah-box.selected { background-color: var(--highlight-color); }
 .surah-page .ayah-number { font-size: 0.9em; color: #888; }
 .surah-page .arabic-text {
     font-family: 'Scheherazade New', serif;
     font-size: 2em;
-    line-height: 2.2; /* Increased line-height */
+    line-height: 2.2; /* ★ 修正点: 行間を広げる */
     direction: rtl;
     text-align: right;
 }
 .surah-page .japanese-text { font-family: 'Noto Serif JP', serif; font-size: 1.0em; color: #555; margin-top: 10px; }
 
-/* --- Sidebar --- */
+/* --- サイドバー --- */
 .surah-page aside {
     width: var(--sidebar-width);
     min-width: 300px;
@@ -135,7 +131,6 @@ body {
     cursor: pointer;
     padding: 0;
     position: static;
-    font-size: 1.5em;
 }
 .surah-page #sidebar-content {
     padding: 20px;
