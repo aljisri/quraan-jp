@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const ayahView = document.getElementById('ayah-view');
     const viewTitle = document.getElementById('view-title');
-    const sidebar = document.getElementById('sidebar');
     let currentSelectedAyah = null;
 
     function getSurahIdFromURL() {
@@ -15,19 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadSurah(surahId) {
         try {
             const response = await fetch(`api.php?surah=${surahId}`);
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`API Error: ${response.status} - ${errorText}`);
-            }
             const ayahs = await response.json();
 
             if (ayahs.length > 0) {
                 const surahName = ayahs[0].surah_name_japanese;
-                if(surahName) { // surahNameがundefinedでないことを確認
+                if (surahName) {
                     viewTitle.textContent = `${surahId}. ${surahName}`;
                     document.title = `Quraan.jp - ${surahName}`;
                 } else {
-                    viewTitle.textContent = `第${surahId}章`; // 念のためのフォールバック
+                     viewTitle.textContent = `第${surahId}章`; // データ取得失敗時のフォールバック
                 }
             }
 
@@ -44,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ayahView.appendChild(ayahBox);
             });
         } catch (error) {
-            console.error(error);
-            ayahView.innerHTML = `<p>データの取得に失敗しました。詳細はコンソールを確認してください。</p>`;
+            console.error("データの読み込みに失敗:", error);
+            ayahView.innerHTML = `<p>データの取得に失敗しました。</p>`;
         }
     }
     
