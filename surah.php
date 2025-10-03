@@ -10,10 +10,9 @@
     <header class="site-header">
         <h1><a href="/">Quraan.jp</a></h1>
     </header>
-
+    
     <div id="page-container" class="page-container">
-        
-        <div class="main-content-wrapper">
+        <div class="content-wrapper">
             <header class="content-header">
                 <a href="/" class="close-button">×</a>
                 <h2 id="view-title">読み込み中...</h2>
