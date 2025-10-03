@@ -11,7 +11,7 @@
         <h1><a href="/">Quraan.jp</a></h1>
     </header>
     
-    <div id="page-container" class="page-container">
+    <div class="page-container">
         <div class="main-content-wrapper">
             <header class="content-header">
                 <div class="header-inner-container">
