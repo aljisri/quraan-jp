@@ -1,17 +1,12 @@
 // surah.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 要素の取得 ---
-    const mainContent = document.getElementById('main-content');
-    const sidebar = document.getElementById('sidebar');
-    const sidebarContent = document.getElementById('sidebar-content');
-    const viewTitle = document.getElementById('view-title');
+    const pageWrapper = document.getElementById('page-wrapper');
     const ayahView = document.getElementById('ayah-view');
-    const closeSidebarButton = document.getElementById('close-sidebar');
+    const viewTitle = document.getElementById('view-title');
+    let currentSelectedAyah = null;
 
-    let currentSelectedAyah = null; // 現在選択中のアーヤを保持する変数
-
-    // URLパスからスーラIDを取得する関数
+    // URLからスーラIDを取得する関数
     function getSurahIdFromURL() {
         const path = window.location.pathname.replace('/', '');
         const surahId = parseInt(path, 10);
@@ -20,14 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // スーラのデータを読み込む関数
     async function loadSurah(surahId) {
-        // ... (この関数の中身は変更なし) ...
         try {
             const response = await fetch(`api.php?surah=${surahId}`);
             const ayahs = await response.json();
 
+            // ★ バグ修正：正しいプロパティ名で章の名前を取得
             if (ayahs.length > 0) {
-                viewTitle.textContent = `第${ayahs[0].surah_id}章 ${ayahs[0].surah_name_japanese}`;
-                document.title = `Quraan.jp - ${ayahs[0].surah_name_japanese}`;
+                const surahName = ayahs[0].surah_name_japanese;
+                viewTitle.textContent = `${surahId}. ${surahName}`;
+                document.title = `Quraan.jp - ${surahName}`;
             }
 
             ayahView.innerHTML = '';
@@ -46,33 +42,20 @@ document.addEventListener('DOMContentLoaded', () => {
             ayahView.innerHTML = `<p>データの取得に失敗しました: ${error.message}</p>`;
         }
     }
-
-    // ★ 修正点：サイドバーを開閉する関数を明確化
-    function openSidebar() {
-        sidebar.classList.add('visible');
-        mainContent.classList.add('sidebar-open');
-    }
-
-    function closeSidebar() {
-        sidebar.classList.remove('visible');
-        mainContent.classList.remove('sidebar-open');
-        // 選択中のハイライトも解除
-        if (currentSelectedAyah) {
-            currentSelectedAyah.classList.remove('selected');
-            currentSelectedAyah = null;
-        }
-    }
-
+    
     // アーヤクリック時のイベント
     ayahView.addEventListener('click', (event) => {
         const ayahBox = event.target.closest('.ayah-box');
         if (ayahBox) {
-            const ayahId = ayahBox.dataset.ayahId;
+            // もしクリックされたのが既に選択中のアーヤなら、サイドバーを閉じる
+            if (currentSelectedAyah === ayahBox) {
+                pageWrapper.classList.remove('sidebar-open');
+                currentSelectedAyah.classList.remove('selected');
+                currentSelectedAyah = null;
+                return;
+            }
 
-            // 既に選択済みのものを再度クリックした場合は何もしない
-            if (currentSelectedAyah === ayahBox) return;
-
-            // 他の選択を解除
+            // 他のアーヤが選択されていたらハイライトを解除
             if (currentSelectedAyah) {
                 currentSelectedAyah.classList.remove('selected');
             }
@@ -81,14 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ayahBox.classList.add('selected');
             currentSelectedAyah = ayahBox;
             
-            // サイドバーを開いて情報を表示
-            openSidebar();
-            sidebarContent.innerHTML = `選択されたアーヤID: ${ayahId}<br>（ここに注釈データを読み込む処理を追加します）`;
+            // サイドバーを開く
+            pageWrapper.classList.add('sidebar-open');
+            // サイドバーに情報を表示する処理はここに書く
         }
     });
-
-    // 閉じるボタンのイベント
-    closeSidebarButton.addEventListener('click', closeSidebar);
 
     // --- 初期化 ---
     const surahId = getSurahIdFromURL();
