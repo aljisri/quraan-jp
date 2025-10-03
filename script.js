@@ -1,6 +1,6 @@
 // surah.js
 document.addEventListener('DOMContentLoaded', () => {
-    const pageContainer = document.getElementById('page-container');
+    const body = document.body;
     const ayahView = document.getElementById('ayah-view');
     const viewTitle = document.getElementById('view-title');
     const sidebar = document.getElementById('sidebar');
@@ -22,10 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const ayahs = await response.json();
 
             if (ayahs.length > 0) {
-                // PHPのapi.phpから返されるsurah_name_japaneseを使うように修正
-                const surahName = ayahs[0].surah_name_japanese; 
-                viewTitle.textContent = `${surahId}. ${surahName}`;
-                document.title = `Quraan.jp - ${surahName}`;
+                const surahName = ayahs[0].surah_name_japanese;
+                if(surahName) { // surahNameがundefinedでないことを確認
+                    viewTitle.textContent = `${surahId}. ${surahName}`;
+                    document.title = `Quraan.jp - ${surahName}`;
+                } else {
+                    viewTitle.textContent = `第${surahId}章`; // 念のためのフォールバック
+                }
             }
 
             ayahView.innerHTML = '';
@@ -41,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ayahView.appendChild(ayahBox);
             });
         } catch (error) {
-            console.error(error); // エラーの詳細をコンソールに出力
+            console.error(error);
             ayahView.innerHTML = `<p>データの取得に失敗しました。詳細はコンソールを確認してください。</p>`;
         }
     }
@@ -50,8 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ayahBox = event.target.closest('.ayah-box');
         if (ayahBox) {
             if (currentSelectedAyah === ayahBox) {
-                pageContainer.classList.remove('sidebar-open');
-                sidebar.classList.remove('visible');
+                body.classList.remove('sidebar-open');
                 currentSelectedAyah.classList.remove('selected');
                 currentSelectedAyah = null;
                 return;
@@ -64,8 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ayahBox.classList.add('selected');
             currentSelectedAyah = ayahBox;
             
-            pageContainer.classList.add('sidebar-open');
-            sidebar.classList.add('visible');
+            body.classList.add('sidebar-open');
         }
     });
 
