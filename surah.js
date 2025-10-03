@@ -1,28 +1,26 @@
 // surah.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    // （以前のコードとほぼ同じですが、URLの読み取り方を少し変更しています）
+    // --- 要素の取得 ---
     const mainContent = document.getElementById('main-content');
     const sidebar = document.getElementById('sidebar');
-    // ...（他の要素取得コードは省略）...
+    const sidebarContent = document.getElementById('sidebar-content');
     const viewTitle = document.getElementById('view-title');
     const ayahView = document.getElementById('ayah-view');
     const closeSidebarButton = document.getElementById('close-sidebar');
 
-    let currentSelectedAyah = null;
+    let currentSelectedAyah = null; // 現在選択中のアーヤを保持する変数
 
-    // URLパスからスーラIDを取得する関数 (例: quraan.jp/2 -> 2を取得)
+    // URLパスからスーラIDを取得する関数
     function getSurahIdFromURL() {
-        // パスの最初の'/'を取り除き、数字部分を取得
         const path = window.location.pathname.replace('/', '');
         const surahId = parseInt(path, 10);
-        // 数字でなければデフォルトで1を返す
         return !isNaN(surahId) && surahId > 0 ? surahId : 1;
     }
     
-    // ... (loadSurah, openSidebar, closeSidebar, イベントリスナーなどの関数は変更なし) ...
-    // （前回の回答からそのままコピーしてください）
+    // スーラのデータを読み込む関数
     async function loadSurah(surahId) {
+        // ... (この関数の中身は変更なし) ...
         try {
             const response = await fetch(`api.php?surah=${surahId}`);
             const ayahs = await response.json();
@@ -49,11 +47,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function openSidebar() { /* ... */ }
-    function closeSidebar() { /* ... */ }
-    ayahView.addEventListener('click', (event) => { /* ... */ });
-    closeSidebarButton.addEventListener('click', closeSidebar);
+    // ★ 修正点：サイドバーを開閉する関数を明確化
+    function openSidebar() {
+        sidebar.classList.add('visible');
+        mainContent.classList.add('sidebar-open');
+    }
 
+    function closeSidebar() {
+        sidebar.classList.remove('visible');
+        mainContent.classList.remove('sidebar-open');
+        // 選択中のハイライトも解除
+        if (currentSelectedAyah) {
+            currentSelectedAyah.classList.remove('selected');
+            currentSelectedAyah = null;
+        }
+    }
+
+    // アーヤクリック時のイベント
+    ayahView.addEventListener('click', (event) => {
+        const ayahBox = event.target.closest('.ayah-box');
+        if (ayahBox) {
+            const ayahId = ayahBox.dataset.ayahId;
+
+            // 既に選択済みのものを再度クリックした場合は何もしない
+            if (currentSelectedAyah === ayahBox) return;
+
+            // 他の選択を解除
+            if (currentSelectedAyah) {
+                currentSelectedAyah.classList.remove('selected');
+            }
+            
+            // 新しくクリックされたアーヤをハイライト
+            ayahBox.classList.add('selected');
+            currentSelectedAyah = ayahBox;
+            
+            // サイドバーを開いて情報を表示
+            openSidebar();
+            sidebarContent.innerHTML = `選択されたアーヤID: ${ayahId}<br>（ここに注釈データを読み込む処理を追加します）`;
+        }
+    });
+
+    // 閉じるボタンのイベント
+    closeSidebarButton.addEventListener('click', closeSidebar);
 
     // --- 初期化 ---
     const surahId = getSurahIdFromURL();
