@@ -8,17 +8,14 @@
 :root {
     --border-color: #e0e0e0;
     --highlight-color: #F1F7FF;
-    --sidebar-width: 35%; /* サイドバーの幅を定義 */
+    --sidebar-width: 35%; /* サイドバーの幅 */
 }
 
 body {
     font-family: 'Noto Sans JP', sans-serif;
     margin: 0;
     background-color: #fff;
-}
-
-#page-wrapper {
-    overflow-x: hidden; /* 横スクロールを防止 */
+    overflow-x: hidden; /* 横スクロールを厳密に禁止 */
 }
 
 /* --- ヘッダー --- */
@@ -41,12 +38,12 @@ body {
     border-bottom: 1px solid var(--border-color);
     background-color: #fff;
     position: sticky;
-    top: 0; /* スクロールしても追従 */
+    top: 0;
     z-index: 100;
-    border-top: 4px solid #4C82A7; /* ご要望の色付き線 */
+    border-top: 4px solid #4C82A7;
 }
 .content-header h2 {
-    margin: 0 auto; /* タイトルを中央に配置 */
+    margin: 0 auto;
     font-size: 1.2em;
     font-weight: normal;
 }
@@ -55,8 +52,10 @@ body {
     color: #888;
     font-size: 1.8em;
     line-height: 1;
-    position: absolute; /* 左端に配置 */
-    left: 20px;
+    /* 位置をコンテンツエリアの左端に合わせるために調整 */
+    position: absolute;
+    left: calc( (100% - 800px) / 2 ); /* (画面幅 - コンテンツ幅) / 2 */
+    margin-left: -20px; /* 余白調整 */
 }
 
 /* --- メインレイアウト --- */
@@ -72,15 +71,21 @@ body {
     transform: translateX(calc(var(--sidebar-width) * -1));
 }
 
+main {
+    width: 100%;
+}
 .view-container {
-    max-width: 800px; /* テキストの最大横幅を指定 */
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 800px; /* テキストの最大横幅 */
+    margin: 0 auto;   /* 中央揃え */
+    padding: 0 20px;  /* 左右の余白 */
 }
 
 /* --- アーヤ表示 --- */
+#ayah-view {
+    padding-top: 15px;
+}
 .ayah-box {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0; /* 左右のパディングをなくし、上下を調整 */
     cursor: pointer;
     border-radius: 5px;
 }
@@ -95,7 +100,7 @@ body {
     text-align: right;
 }
 .japanese-text {
-    font-family: 'Noto Serif JP', serif; /* 明朝体に指定 */
+    font-family: 'Noto Serif JP', serif;
     font-size: 1.0em;
     color: #555;
     margin-top: 10px;
@@ -105,29 +110,39 @@ body {
     color: #888;
 }
 
-
 /* --- サイドバー --- */
 aside {
     width: var(--sidebar-width);
     min-width: 300px;
-    padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #f4f4f4; /* 薄めのグレー */
     border-left: 1px solid var(--border-color);
     position: fixed;
     right: 0;
-    top: 0; /* ヘッダーの下ではなく、画面の上端を基準にする */
+    top: 0;
     bottom: 0;
-    padding-top: 120px; /* ヘッダー2段分の高さを確保 */
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
     box-sizing: border-box;
-    overflow-y: auto;
     z-index: 50;
+    display: flex;
+    flex-direction: column;
 }
 aside.visible {
     transform: translateX(0);
 }
-#close-sidebar {
-    /* このボタンはSefariaにはないので、今回は使いません */
-    display: none;
+.sidebar-header {
+    padding: 10px 20px;
+    background-color: #e9ecef; /* グレーのバー */
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    padding-top: 60px; /* 上段ヘッダー分の余白 */
+}
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+#sidebar-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
 }
