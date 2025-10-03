@@ -7,7 +7,7 @@ try {
     $pdo = connect_db();
     
     // URLパラメータで'surah'が指定されているかチェック
-    if (isset($_GET['surah'])) {
+    if (isset($_GET['surah']) && !empty($_GET['surah'])) {
         // --- 特定のスーラのアーヤを返す ---
         $surah_id = (int)$_GET['surah'];
         $stmt = $pdo->prepare(
