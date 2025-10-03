@@ -21,13 +21,16 @@
                     <h2 id="view-title">読み込み中...</h2>
                 </header>
 
-                <main id="main-content">
+                <main>
                     <div id="ayah-view" class="view-container">
                         </div>
                 </main>
             </div>
 
             <aside id="sidebar">
+                <div class="sidebar-header">
+                    <h3>Resources</h3>
+                </div>
                 <div id="sidebar-content">
                     <p>アーヤをクリックすると、ここに注釈などが表示されます。</p>
                 </div>
