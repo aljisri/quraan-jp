@@ -1,7 +1,6 @@
 // surah.js
-
 document.addEventListener('DOMContentLoaded', () => {
-    const pageWrapper = document.getElementById('page-wrapper');
+    const mainContainer = document.getElementById('main-container');
     const ayahView = document.getElementById('ayah-view');
     const viewTitle = document.getElementById('view-title');
     const sidebar = document.getElementById('sidebar');
@@ -16,10 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadSurah(surahId) {
         try {
             const response = await fetch(`api.php?surah=${surahId}`);
+            if (!response.ok) {
+                // エラーレスポンスの内容をテキストとして取得
+                const errorText = await response.text();
+                throw new Error(`API Error: ${response.status} - ${errorText}`);
+            }
             const ayahs = await response.json();
 
             // ★ バグ修正：正しいプロパティ名で章の名前を取得
             if (ayahs.length > 0) {
+                // api.phpから返されるsurah_name_japaneseを使う
                 const surahName = ayahs[0].surah_name_japanese;
                 // 表示形式をご要望に合わせる
                 viewTitle.textContent = `${surahId}. ${surahName}`;
@@ -39,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 ayahView.appendChild(ayahBox);
             });
         } catch (error) {
-            ayahView.innerHTML = `<p>データの取得に失敗しました: ${error.message}</p>`;
+            console.error(error); // エラーの詳細をコンソールに出力
+            ayahView.innerHTML = `<p>データの取得に失敗しました。詳細はコンソールを確認してください。</p>`;
         }
     }
     
@@ -47,9 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ayahView.addEventListener('click', (event) => {
         const ayahBox = event.target.closest('.ayah-box');
         if (ayahBox) {
-            // サイドバーを閉じるロジック
             if (currentSelectedAyah === ayahBox) {
-                pageWrapper.classList.remove('sidebar-open');
+                mainContainer.classList.remove('sidebar-open');
                 sidebar.classList.remove('visible');
                 currentSelectedAyah.classList.remove('selected');
                 currentSelectedAyah = null;
@@ -63,10 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ayahBox.classList.add('selected');
             currentSelectedAyah = ayahBox;
             
-            // サイドバーを開く
-            pageWrapper.classList.add('sidebar-open');
+            mainContainer.classList.add('sidebar-open');
             sidebar.classList.add('visible');
-            // ここに注釈データを読み込む処理を追加
         }
     });
 
