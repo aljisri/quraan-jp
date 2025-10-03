@@ -8,19 +8,20 @@
 :root {
     --border-color: #e0e0e0;
     --highlight-color: #F1F7FF;
-    --sidebar-width: 35%;
+    --sidebar-width: 35%; /* サイドバーの幅 */
     --header-height: 50px;
     --content-header-height: 55px;
+    --content-max-width: 800px; /* コンテンツの最大幅 */
 }
 
 body {
-    font-family: 'Noto+Sans+JP', sans-serif;
+    font-family: 'Noto Sans JP', sans-serif;
     margin: 0;
     background-color: #fff;
-    overflow-x: hidden;
+    overflow-x: hidden; /* 横スクロール禁止 */
 }
 
-/* --- 共通ヘッダー --- */
+/* --- ヘッダー --- */
 .site-header {
     padding: 10px 20px;
     border-bottom: 1px solid var(--border-color);
@@ -30,56 +31,20 @@ body {
 .site-header h1 { margin: 0; font-size: 1.5em; }
 .site-header a { text-decoration: none; color: inherit; }
 
-/* --- メインコンテンツ --- */
-.view-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+/* --- メインレイアウト --- */
+.page-container {
+    display: flex;
+    justify-content: center; /* 中央揃えの基準 */
 }
-.list-title {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
+.main-content-wrapper {
+    width: 100%;
+    transition: width 0.3s ease-in-out;
 }
-
-/* --- スーラ選択ページ (`index.html`) スタイル --- */
-#surah-list-view {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-}
-.surah-link {
-    display: block;
-    padding: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    text-decoration: none;
-    color: inherit;
-    transition: background-color 0.2s, border-color 0.2s;
-}
-.surah-link:hover {
-    background-color: #f9f9f9;
-    border-color: #ccc;
-}
-.surah-link h3 {
-    margin: 0 0 5px 0;
-    font-family: 'Noto+Serif+JP', serif;
-}
-.surah-info {
-    font-size: 0.9em;
-    color: #777;
+.page-container.sidebar-open .main-content-wrapper {
+    /* サイドバーが開いたら、コンテンツエリアの幅を狭くする */
+    width: calc(100% - var(--sidebar-width));
 }
 
-/* --- スーラ表示ページ (`surah.php`) レイアウト --- */
-.main-container {
-    position: relative;
-}
-.content-wrapper {
-    transition: transform 0.3s ease-in-out;
-}
-.sidebar-open .content-wrapper {
-    transform: translateX(calc(var(--sidebar-width) * -1));
-}
 .content-header {
     display: flex;
     align-items: center;
@@ -93,18 +58,36 @@ body {
     border-top: 4px solid #4C82A7;
     box-sizing: border-box;
 }
-.content-header h2 { margin: 0 auto; font-size: 1.2em; font-weight: normal; }
+/* ★ 修正点: navigationの部分も明朝体にする */
+.content-header h2 {
+    margin: 0 auto;
+    font-size: 1.2em;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 700;
+}
 .close-button {
     text-decoration: none;
     color: #888;
     font-size: 1.8em;
     line-height: 1;
     position: absolute;
-    /* (画面幅 - (コンテンツ幅 + 左右パディング)) / 2  */
-    left: calc((100vw - 840px) / 2);
+    /* ★ 修正点: コンテンツの左端に合わせて再計算 */
+    left: calc((100% - var(--content-max-width)) / 2 - 40px);
 }
 
-/* --- アーヤ表示スタイル --- */
+.view-container {
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+#surah-list-view .surah-link h3,
+.list-title {
+    font-family: 'Noto Serif JP', serif;
+}
+
+
+/* --- アーヤ表示 --- */
+#ayah-view { padding-top: 15px; }
 .ayah-box { padding: 0.75rem 0; cursor: pointer; border-radius: 5px; }
 .ayah-box.selected { background-color: var(--highlight-color); }
 .arabic-text { font-family: 'Scheherazade New', serif; font-size: 2em; line-height: 1.8; direction: rtl; text-align: right; }
@@ -115,10 +98,11 @@ body {
 aside {
     width: var(--sidebar-width);
     min-width: 300px;
-    background-color: #f4f4f4; /* 薄めのグレー */
+    background-color: #fff; /* 背景を白に */
+    border-left: 1px solid var(--border-color);
     position: fixed;
     right: 0;
-    top: var(--header-height); /* サイトヘッダーの下から開始 */
+    top: var(--header-height);
     bottom: 0;
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
@@ -132,7 +116,7 @@ aside.visible {
 }
 .sidebar-header {
     padding: 10px 20px;
-    background-color: #e9ecef; /* グレーのバー */
+    background-color: #e9ecef; /* ご指定のグレーバー */
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
     height: var(--content-header-height);
@@ -141,4 +125,9 @@ aside.visible {
     align-items: center;
 }
 .sidebar-header h3 { margin: 0; font-size: 1.2em; }
-#sidebar-content { padding: 20px; overflow-y: auto; flex-grow: 1; }
+#sidebar-content {
+    padding: 20px;
+    overflow-y: auto;
+    flex-grow: 1;
+    background-color: #f8f9fa; /* ご指定の薄めのグレー */
+}
