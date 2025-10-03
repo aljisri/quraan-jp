@@ -1,35 +1,35 @@
 <?php
 // api.php
-
-// どのファイルからでも呼び出せるようにCORSヘッダーを設定
-header("Access-Control-Allow-Origin: *");
-// 出力がJSON形式であることをブラウザに伝える
 header("Content-Type: application/json; charset=UTF-8");
-
 require_once 'db.php';
-
-// URLのパラメータからスーラ番号を取得 (例: /api.php?surah=1)
-// 指定がない場合は1をデフォルトとする
-$surah_id = isset($_GET['surah']) ? (int)$_GET['surah'] : 1;
 
 try {
     $pdo = connect_db();
-    if (!$pdo) {
-        throw new Exception("データベース接続に失敗しました。");
+    
+    // URLパラメータで'surah'が指定されているかチェック
+    if (isset($_GET['surah'])) {
+        // --- 特定のスーラのアーヤを返す ---
+        $surah_id = (int)$_GET['surah'];
+        $stmt = $pdo->prepare(
+            // surahsテーブルをJOINして、surah_name_japaneseも一緒に取得する
+            "SELECT a.id, a.surah_id, a.ayah_number, a.text_arabic, a.text_japanese, s.name_japanese AS surah_name_japanese 
+             FROM ayahs a
+             JOIN surahs s ON a.surah_id = s.id
+             WHERE a.surah_id = ? 
+             ORDER BY a.ayah_number ASC"
+        );
+        $stmt->execute([$surah_id]);
+        $results = $stmt->fetchAll();
+    } else {
+        // --- 全てのスーラ一覧を返す ---
+        $stmt = $pdo->query("SELECT id, name_arabic, name_japanese, total_ayahs FROM surahs ORDER BY id ASC");
+        $results = $stmt->fetchAll();
     }
 
-    // データベースから指定されたスーラのアーヤを取得
-    // ayahsテーブルとsurahsテーブルを想定
-    $stmt = $pdo->prepare("SELECT * FROM ayahs WHERE surah_id = ? ORDER BY ayah_number ASC");
-    $stmt->execute([$surah_id]);
-    $ayahs = $stmt->fetchAll();
-
-    // 取得したデータをJSON形式で出力
-    echo json_encode($ayahs);
+    echo json_encode($results);
 
 } catch (Exception $e) {
-    // エラーハンドリング
-    http_response_code(500); // Internal Server Error
+    http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);
 }
 ?>
