@@ -1,0 +1,12 @@
+# .htaccess
+
+# URL書き換えエンジンをオンにする
+RewriteEngine On
+
+# もしリクエストされたパスが、実際のファイルでなければ
+RewriteCond %{REQUEST_FILENAME} !-f
+# そして、実際ディレクトリでもなければ
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# 数字だけのパス（例: /2, /114）をsurah.phpに内部的に転送する
+RewriteRule ^(\d+)$ /surah.php?id=$1 [L]
