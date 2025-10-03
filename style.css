@@ -1,6 +1,4 @@
 /* style.css */
-
-/* --- フォント --- */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap');
@@ -13,107 +11,35 @@
     --content-header-height: 55px;
     --content-max-width: 800px;
 }
-
-body {
-    font-family: 'Noto Sans JP', sans-serif;
-    margin: 0;
-    background-color: #fff;
-}
-
-/* --- 共通ヘッダー --- */
-.site-header { /* 変更なし */ }
+body { font-family: 'Noto Sans JP', sans-serif; margin: 0; background-color: #fff; }
+.site-header { padding: 10px 20px; border-bottom: 1px solid var(--border-color); height: var(--header-height); box-sizing: border-box; }
+.site-header h1 { margin: 0; font-size: 1.5em; }
+.site-header a { text-decoration: none; color: inherit; }
+.view-container { max-width: var(--content-max-width); margin: 0 auto; padding: 20px; }
 
 /* --- index.html スタイル --- */
-.index-page .list-title { /* 変更なし */ }
-.index-page #surah-list-view { /* 変更なし */ }
-/* ... その他のindex.htmlスタイルも変更なし ... */
-
+.index-page .list-title { font-size: 2em; font-weight: bold; margin-bottom: 1.5rem; font-family: 'Noto Serif JP', serif; }
+.index-page #surah-list-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+.index-page .surah-link { display: block; padding: 1rem; border: 1px solid var(--border-color); border-radius: 5px; text-decoration: none; color: inherit; transition: background-color 0.2s, border-color 0.2s; }
+.index-page .surah-link:hover { background-color: #f9f9f9; border-color: #ccc; }
+.index-page .surah-link h3 { margin: 0 0 5px 0; font-family: 'Noto Serif JP', serif; }
+.index-page .surah-info { font-size: 0.9em; color: #777; }
 
 /* --- surah.php レイアウト --- */
 .surah-page .page-container { display: flex; }
 .surah-page .main-content-wrapper { flex-grow: 1; min-width: 0; }
-.surah-page .content-header {
-    display: flex;
-    justify-content: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    height: var(--content-header-height);
-    background-color: #fff;
-    border-bottom: 1px solid var(--border-color);
-    border-top: 4px solid #4C82A7;
-    box-sizing: border-box;
-}
-.surah-page .header-inner-container {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-    padding: 0 20px;
-    position: relative;
-    box-sizing: border-box;
-}
-.surah-page .content-header h2 {
-    margin: 0 auto;
-    font-size: 1.2em;
-    font-family: 'Noto Serif JP', serif;
-    font-weight: 700;
-}
-.surah-page .close-button {
-    text-decoration: none;
-    color: #888;
-    font-size: 1.8em;
-    line-height: 1;
-    /* ★ 修正点: 位置を調整 */
-    position: absolute;
-    left: 0; /* .header-inner-containerの左端が基準 */
-}
-
-.surah-page .view-container { max-width: var(--content-max-width); margin: 0 auto; padding: 20px; }
-
-/* アーヤ表示スタイル */
+.surah-page .content-header { display: flex; align-items: center; justify-content: center; position: sticky; top: 0; z-index: 100; height: var(--content-header-height); background-color: #fff; border-bottom: 1px solid var(--border-color); border-top: 4px solid #4C82A7; box-sizing: border-box; }
+.surah-page .content-header h2 { margin: 0; font-size: 1.2em; font-family: 'Noto Serif JP', serif; font-weight: 700; }
+.surah-page .close-button { position: absolute; left: 20px; text-decoration: none; color: #888; font-size: 1.8em; line-height: 1; }
 .surah-page .ayah-box { padding: 0.75rem 1rem; cursor: pointer; border-radius: 5px; }
 .surah-page .ayah-box.selected { background-color: var(--highlight-color); }
 .surah-page .ayah-number { font-size: 0.9em; color: #888; }
-.surah-page .arabic-text {
-    font-family: 'Scheherazade New', serif;
-    font-size: 2em;
-    line-height: 2.2; /* ★ 修正点: 行間を広げる */
-    direction: rtl;
-    text-align: right;
-}
+.surah-page .arabic-text { font-family: 'Scheherazade New', serif; font-size: 2em; line-height: 1.8; direction: rtl; text-align: right; }
 .surah-page .japanese-text { font-family: 'Noto Serif JP', serif; font-size: 1.0em; color: #555; margin-top: 10px; }
 
 /* --- サイドバー --- */
-.surah-page aside {
-    width: var(--sidebar-width);
-    min-width: 300px;
-    background-color: #fff;
-    border-left: 1px solid var(--border-color);
-    flex-shrink: 0;
-    display: none;
-    position: sticky;
-    top: var(--header-height);
-    height: calc(100vh - var(--header-height));
-}
+.surah-page aside { width: var(--sidebar-width); min-width: 300px; border-left: 1px solid var(--border-color); flex-shrink: 0; display: none; position: sticky; top: var(--header-height); height: calc(100vh - var(--header-height)); }
 .surah-page.sidebar-open aside { display: flex; flex-direction: column; }
-.surah-page .sidebar-header {
-    display: flex; /* ★ 修正点: ボタン配置のためFlexboxに */
-    justify-content: space-between; /* ★ 修正点: 양쪽 정렬 */
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #e9ecef;
-    border-bottom: 1px solid var(--border-color);
-    height: var(--content-header-height);
-    box-sizing: border-box;
-}
+.surah-page .sidebar-header { padding: 10px 20px; background-color: #e9ecef; border-bottom: 1px solid var(--border-color); height: var(--content-header-height); box-sizing: border-box; display: flex; align-items: center; }
 .surah-page .sidebar-header h3 { margin: 0; font-size: 1.2em; }
-/* ★ 修正点: サイドバーの閉じるボタンのスタイル */
-.surah-page aside .close-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
 .surah-page #sidebar-content { padding: 20px; overflow-y: auto; flex-grow: 1; background-color: #f8f9fa; }
