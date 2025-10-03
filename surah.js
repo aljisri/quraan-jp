@@ -1,10 +1,8 @@
 // surah.js
 document.addEventListener('DOMContentLoaded', () => {
-    // ★ 修正点: 正しい親要素を取得
-    const pageContainer = document.getElementById('page-container');
+    const body = document.body;
     const ayahView = document.getElementById('ayah-view');
     const viewTitle = document.getElementById('view-title');
-    const sidebar = document.getElementById('sidebar');
     let currentSelectedAyah = null;
 
     function getSurahIdFromURL() {
@@ -15,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     async function loadSurah(surahId) {
         try {
-            // ★ 修正点: api.phpを呼び出す
             const response = await fetch(`api.php?surah=${surahId}`);
             if (!response.ok) {
                 const errorText = await response.text();
@@ -23,11 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const ayahs = await response.json();
 
-            // ★ 修正点: 正しいプロパティ名で章の名前を取得
             if (ayahs.length > 0) {
                 const surahName = ayahs[0].surah_name_japanese;
-                viewTitle.textContent = `${surahId}. ${surahName}`;
-                document.title = `Quraan.jp - ${surahName}`;
+                if(surahName) { 
+                    viewTitle.textContent = `${surahId}. ${surahName}`;
+                    document.title = `Quraan.jp - ${surahName}`;
+                } else {
+                    viewTitle.textContent = `第${surahId}章`;
+                }
             }
 
             ayahView.innerHTML = '';
@@ -43,19 +43,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 ayahView.appendChild(ayahBox);
             });
         } catch (error) {
-            console.error(error);
+            console.error(error); 
             ayahView.innerHTML = `<p>データの取得に失敗しました。詳細はコンソールを確認してください。</p>`;
         }
     }
     
-    // アーヤクリック時のイベント
     ayahView.addEventListener('click', (event) => {
         const ayahBox = event.target.closest('.ayah-box');
         if (ayahBox) {
             if (currentSelectedAyah === ayahBox) {
-                // ★ 修正点: 正しい親要素のクラスを操作
-                pageContainer.classList.remove('sidebar-open');
-                sidebar.classList.remove('visible');
+                body.classList.remove('sidebar-open');
                 currentSelectedAyah.classList.remove('selected');
                 currentSelectedAyah = null;
                 return;
@@ -68,9 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ayahBox.classList.add('selected');
             currentSelectedAyah = ayahBox;
             
-            // ★ 修正点: 正しい親要素のクラスを操作
-            pageContainer.classList.add('sidebar-open');
-            sidebar.classList.add('visible');
+            body.classList.add('sidebar-open');
         }
     });
 
