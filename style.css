@@ -3,40 +3,82 @@
 /* --- フォント --- */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap'); /* 明朝体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap');
 
 :root {
     --border-color: #e0e0e0;
     --highlight-color: #F1F7FF;
     --sidebar-width: 35%;
-    --header-height: 50px; /* ヘッダーの高さを定義 */
+    --header-height: 50px;
     --content-header-height: 55px;
 }
 
 body {
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: 'Noto+Sans+JP', sans-serif;
     margin: 0;
     background-color: #fff;
+    overflow-x: hidden;
 }
 
-#page-wrapper.sidebar-open {
-    overflow: hidden; /* サイドバー表示中は背景のスクロールを禁止 */
-}
-
-/* --- ヘッダー --- */
+/* --- 共通ヘッダー --- */
 .site-header {
     padding: 10px 20px;
     border-bottom: 1px solid var(--border-color);
     height: var(--header-height);
     box-sizing: border-box;
 }
-.site-header h1 {
-    margin: 0;
-    font-size: 1.5em;
+.site-header h1 { margin: 0; font-size: 1.5em; }
+.site-header a { text-decoration: none; color: inherit; }
+
+/* --- メインコンテンツ --- */
+.view-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }
-.site-header a {
+.list-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+/* --- スーラ選択ページ (`index.html`) スタイル --- */
+#surah-list-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+.surah-link {
+    display: block;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
     text-decoration: none;
     color: inherit;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.surah-link:hover {
+    background-color: #f9f9f9;
+    border-color: #ccc;
+}
+.surah-link h3 {
+    margin: 0 0 5px 0;
+    font-family: 'Noto+Serif+JP', serif;
+}
+.surah-info {
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* --- スーラ表示ページ (`surah.php`) レイアウト --- */
+.main-container {
+    position: relative;
+}
+.content-wrapper {
+    transition: transform 0.3s ease-in-out;
+}
+.sidebar-open .content-wrapper {
+    transform: translateX(calc(var(--sidebar-width) * -1));
 }
 .content-header {
     display: flex;
@@ -48,73 +90,32 @@ body {
     top: 0;
     z-index: 100;
     height: var(--content-header-height);
-    border-top: 4px solid #4C82A7; /* 色付き線 */
+    border-top: 4px solid #4C82A7;
     box-sizing: border-box;
 }
-.content-header h2 {
-    margin: 0 auto;
-    font-size: 1.2em;
-    font-weight: normal;
-}
+.content-header h2 { margin: 0 auto; font-size: 1.2em; font-weight: normal; }
 .close-button {
     text-decoration: none;
     color: #888;
     font-size: 1.8em;
     line-height: 1;
     position: absolute;
-    /* コンテンツの左端に合わせて配置 */
-    left: calc( (100% - 840px) / 2 ); /* (画面幅 - (コンテンツ幅+余白)) / 2 */
+    /* (画面幅 - (コンテンツ幅 + 左右パディング)) / 2  */
+    left: calc((100vw - 840px) / 2);
 }
 
-/* --- メインレイアウト --- */
-.main-container {
-    display: flex;
-    justify-content: center; /* コンテンツを中央に */
-}
-main {
-    width: 100%;
-    max-width: 800px; /* テキストの最大横幅 */
-    padding: 0 20px;
-    box-sizing: border-box;
-    transition: margin-right 0.3s ease-in-out;
-}
-.sidebar-open main {
-    margin-right: var(--sidebar-width); /* サイドバーが開いたら右にマージンを作る */
-}
-
-/* --- アーヤ表示 --- */
-.ayah-box {
-    padding: 0.75rem 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-}
-.ayah-box.selected {
-    background-color: var(--highlight-color);
-}
-.arabic-text {
-    font-family: 'Scheherazade New', serif;
-    font-size: 2em;
-    line-height: 1.8;
-    direction: rtl;
-    text-align: right;
-}
-.japanese-text {
-    font-family: 'Noto Serif JP', serif;
-    font-size: 1.0em;
-    color: #555;
-    margin-top: 10px;
-}
-.ayah-number {
-    font-size: 0.9em;
-    color: #888;
-}
+/* --- アーヤ表示スタイル --- */
+.ayah-box { padding: 0.75rem 0; cursor: pointer; border-radius: 5px; }
+.ayah-box.selected { background-color: var(--highlight-color); }
+.arabic-text { font-family: 'Scheherazade New', serif; font-size: 2em; line-height: 1.8; direction: rtl; text-align: right; }
+.japanese-text { font-family: 'Noto Serif JP', serif; font-size: 1.0em; color: #555; margin-top: 10px; }
+.ayah-number { font-size: 0.9em; color: #888; }
 
 /* --- サイドバー --- */
 aside {
     width: var(--sidebar-width);
     min-width: 300px;
     background-color: #f4f4f4; /* 薄めのグレー */
-    border-left: 1px solid var(--border-color);
     position: fixed;
     right: 0;
     top: var(--header-height); /* サイトヘッダーの下から開始 */
@@ -134,17 +135,10 @@ aside.visible {
     background-color: #e9ecef; /* グレーのバー */
     border-bottom: 1px solid var(--border-color);
     flex-shrink: 0;
-    height: var(--content-header-height); /* 章の名前バーと高さを合わせる */
+    height: var(--content-header-height);
     box-sizing: border-box;
     display: flex;
     align-items: center;
 }
-.sidebar-header h3 {
-    margin: 0;
-    font-size: 1.2em;
-}
-#sidebar-content {
-    padding: 20px;
-    overflow-y: auto;
-    flex-grow: 1;
-}
+.sidebar-header h3 { margin: 0; font-size: 1.2em; }
+#sidebar-content { padding: 20px; overflow-y: auto; flex-grow: 1; }
