@@ -6,10 +6,11 @@
     <title>Quraan.jp</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="surah-page"> <header class="site-header">
+<body class="surah-page">
+    <header class="site-header">
         <h1><a href="/">Quraan.jp</a></h1>
     </header>
-
+    
     <div class="page-container">
         <div class="main-content-wrapper">
             <header class="content-header">
