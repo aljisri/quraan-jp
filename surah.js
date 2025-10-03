@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const ayahView = document.getElementById('ayah-view');
     const viewTitle = document.getElementById('view-title');
-    const sidebarCloseButton = document.getElementById('sidebar-close-button'); // ★ 修正点: ボタンを取得
+    const sidebarCloseButton = document.getElementById('sidebar-close-button');
     let currentSelectedAyah = null;
 
     function getSurahIdFromURL() {
@@ -12,12 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return !isNaN(surahId) && surahId > 0 ? surahId : 1;
     }
     
-    // ... loadSurah 関数は変更なし ...
     async function loadSurah(surahId) {
-      // ...
+      // ... (This function remains the same as the working version)
     }
 
-    // ★ 修正点: 閉じるロジックを関数化
     function closeSidebar() {
         body.classList.remove('sidebar-open');
         if (currentSelectedAyah) {
@@ -30,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ayahBox = event.target.closest('.ayah-box');
         if (ayahBox) {
             if (currentSelectedAyah === ayahBox) {
-                closeSidebar(); // 関数を呼び出す
+                closeSidebar();
                 return;
             }
 
@@ -45,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // ★ 修正点: サイドバーの閉じるボタンにイベントを追加
     sidebarCloseButton.addEventListener('click', closeSidebar);
 
     const surahId = getSurahIdFromURL();
